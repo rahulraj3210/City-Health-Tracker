@@ -23,7 +23,21 @@ infected houses (3+, including diagonals) are detected and outlined as
 
 ## Architecture
 
-Feature-first (`lib/core`, `lib/features/dashboard`, `lib/features/health_map`).
+Feature-based modules directly under `lib/` (`core`, `dashboard`,
+`health_map`), each with the same layout:
+
+```
+lib/<module>/
+  blocs/     Cubits and their freezed states
+  screens/   Routable pages (@RoutePage)
+  service/   Firebase/API services
+  models/    Freezed models
+  widgets/   UI components for this module
+```
+
+`core/` additionally holds app-wide `router/`, `theme/`, `constants/`,
+`utils/`, and `firebase/` (generated config).
+
 UI talks only to cubits; cubits talk to services; only
 `firestore_city_health_service.dart` touches Firestore.
 

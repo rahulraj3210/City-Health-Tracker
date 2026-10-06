@@ -15,7 +15,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:city_health_tracker/core/constants/firestore_paths.dart';
-import 'package:city_health_tracker/features/health_map/services/mock_city_generator.dart';
+import 'package:city_health_tracker/health_map/service/mock_city_generator.dart';
 
 const _defaultProject = 'city-health-tracker-5843';
 const _batchLimit = 450; // Firestore batchWrite caps at 500 writes.

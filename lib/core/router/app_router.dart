@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/dashboard/view/pages/dashboard_page.dart';
-import '../../features/health_map/view/pages/block_detail_page.dart';
+import '../../dashboard/screens/dashboard_page.dart';
+import '../../health_map/screens/block_detail_page.dart';
 
 part 'app_router.gr.dart';
 

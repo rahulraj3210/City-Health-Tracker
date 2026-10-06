@@ -4,7 +4,7 @@ targets:
       freezed:
         generate_for:
           - lib/**/models/**.dart
-          - lib/**/cubit/**.dart
+          - lib/**/blocs/**.dart
       json_serializable:
         generate_for:
           - lib/**/models/**.dart
@@ -12,7 +12,7 @@ targets:
           explicit_to_json: true
       auto_route_generator:auto_route_generator:
         generate_for:
-          - lib/**/view/pages/**.dart
+          - lib/**/screens/**.dart
       auto_route_generator:auto_router_generator:
         generate_for:
           - lib/core/router/app_router.dart

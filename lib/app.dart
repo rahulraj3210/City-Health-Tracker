@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'features/health_map/cubit/city_health_cubit.dart';
-import 'features/health_map/cubit/house_status_cubit.dart';
-import 'features/health_map/services/city_health_service.dart';
-import 'features/health_map/services/firestore_city_health_service.dart';
+import 'health_map/blocs/city_health_cubit.dart';
+import 'health_map/blocs/house_status_cubit.dart';
+import 'health_map/service/city_health_service.dart';
+import 'health_map/service/firestore_city_health_service.dart';
 
 class CityHealthApp extends StatefulWidget {
   const CityHealthApp({super.key});
