@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "city-health-tracker-5843",
+          "appId": "1:570786816931:android:83d3cae3be61293b30f016",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/core/firebase/firebase_options.dart": {
+          "projectId": "city-health-tracker-5843",
+          "configurations": {
+            "android": "1:570786816931:android:83d3cae3be61293b30f016",
+            "web": "1:570786816931:web:3bcc734d8509676a30f016"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-south1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

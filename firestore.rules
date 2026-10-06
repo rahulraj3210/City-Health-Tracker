@@ -1,0 +1,69 @@
+rules_version = '2';
+
+// No Firebase Auth yet. Reads are public. The ONLY permitted write is an
+// unauthenticated update that changes a house's `status` (optionally stamping
+// `updatedAt` with the server time). Every create, delete, and any other
+// update — including all writes to blocks — is denied.
+//
+// TODO(auth): once Firebase Auth exists, require request.auth != null (and a
+// role claim) for status updates.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /blocks/{blockId} {
+      allow read: if true;
+      allow create, update, delete: if false;
+
+      match /houses/{houseId} {
+        allow read: if true;
+        allow create, delete: if false;
+        allow update: if isStatusOnlyUpdate() && isValidStatus(request.resource.data.status);
+      }
+    }
+
+    // Required for the collection-group query that loads every house at once.
+    // Read-only: rules are OR'd, so this must never grant write.
+    match /{path=**}/houses/{houseId} {
+      allow read: if true;
+    }
+
+    // ---- helpers ----------------------------------------------------------
+
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    // `status` must change; `updatedAt` may change only to the server time.
+    function isStatusOnlyUpdate() {
+      return changedKeys().hasAll(['status'])
+          && changedKeys().hasOnly(['status', 'updatedAt'])
+          && (!changedKeys().hasAny(['updatedAt'])
+              || request.resource.data.updatedAt == request.time);
+    }
+
+    // Timestamps must be real and not meaningfully in the future.
+    function isPastTimestamp(t) {
+      return t is timestamp && t <= request.time + duration.value(5, 'm');
+    }
+
+    // Mirrors the HealthStatus freezed union (unionKey: 'type').
+    function isValidStatus(s) {
+      return s is map && (
+        (s.type == 'healthy'
+            && s.keys().hasOnly(['type']))
+        || (s.type == 'suspected'
+            && s.keys().hasOnly(['type', 'reportedAt'])
+            && isPastTimestamp(s.reportedAt))
+        || (s.type == 'infected'
+            && s.keys().hasAll(['type', 'confirmedAt'])
+            && s.keys().hasOnly(['type', 'confirmedAt', 'severity'])
+            && isPastTimestamp(s.confirmedAt)
+            && (!s.keys().hasAny(['severity'])
+                || s.severity in ['mild', 'moderate', 'severe']))
+        || (s.type == 'recovered'
+            && s.keys().hasOnly(['type', 'recoveredAt'])
+            && isPastTimestamp(s.recoveredAt))
+      );
+    }
+  }
+}
